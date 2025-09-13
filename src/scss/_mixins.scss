@@ -1,0 +1,27 @@
+@use 'variables' as *;
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin grid($columns, $gap: 1rem) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+}
+
+@mixin button-style($size) {
+    font-size: $size;
+    padding: 0.6em 1.2em;
+    color: $primary-color;
+    background-color: white;
+    border: 1px solid $primary-color;
+    font-weight: bold;
+    text-decoration: none;
+
+    &:hover {
+        color: white;
+        background-color: $primary-color;
+        }
+}

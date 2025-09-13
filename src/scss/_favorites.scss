@@ -1,0 +1,56 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+#favorites {
+  margin: 2rem 0;
+
+  .carousel-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .favorites-carousel {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 1rem 0;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  border: 0;
+  width: 1.5rem;
+  height: 5rem;
+  font-size: 6rem;
+  color: $text-color-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  user-select: none;
+  z-index: 10;
+  transition: color 0.2s ease, background-color 0.2s ease;
+
+  &:hover {
+    color: $text-color;
+  }
+
+  &.left {
+    left: -2.5rem;
+  }
+
+  &.right {
+    right: -2.5rem;
+  }
+}
+
+}
