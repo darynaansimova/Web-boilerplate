@@ -35,27 +35,31 @@ header {
     }
 
     .search-form {
-      display: flex;
-      gap: 0.5rem;
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 0.5rem;
+        input {
+            font-size: 0.8rem;
+        }
 
-      input {
-        width: 100%;
-        max-width: 50ch;
-        min-width: 30ch;
-        padding: 0.5em 1em;
-        box-sizing: border-box;
-        &:hover, &:focus {
-          width: calc(50ch + 8em);
-          transition: width 0.2s ease, padding-right 0.2s ease;
+        input {
+            flex: 0 0 60%;
+            max-width: 30rem;
+            min-width: 12rem;
+            transition: flex-basis 0.3s ease;
+
+            &:focus,
+            &:hover {
+            flex-basis: 100%;
+            }
+        }
+
+        button {
+            @include m.button-style(0.7rem);
+            flex-shrink: 0;
         }
     }
 
-
-
-      button {
-        @include m.button-style(0.7rem);
-      }
-    }
   }
 }
   .menu {

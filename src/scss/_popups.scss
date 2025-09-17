@@ -20,7 +20,7 @@
   overflow: hidden;
 
   .popup-title {
-    background-color: darken($background-color, 65%);
+    background-color: rgb(69, 69, 69);
     color: white;
     display: flex;
     align-items: center;
@@ -142,7 +142,7 @@
       width: 100%;
       padding: 0.4rem;
       font-size: 0.7rem;
-      border: 1px solid lighten($text-color, 40%);
+      border: 1px solid $text-color-light;
       border-radius: 3px;
       box-sizing: border-box;
     }
