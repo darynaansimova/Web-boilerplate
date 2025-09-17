@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ihor Tkachuk – Chemistry</title>
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="scss/style.css" />
+</head>
+<body>
+  <main class="popup-page">
+  <section class="teacher-form">
+    <div class="popup-title">
+      <h1>Add Teacher</h1>
+      <span class="close-btn" title="Close popup">×</span>
+    </div>
+
+    <form action="#" method="post">
+      <!-- Full-width rows -->
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter name" required />
+
+      <label for="specialty">Specialty</label>
+      <select id="specialty" name="specialty" required>
+        <option value="math">Mathematics</option>
+        <option value="chemistry">Chemistry</option>
+        <option value="physics">Physics</option>
+      </select>
+
+      <div class="form-grid">
+        <div>
+          <label for="country">Country</label>
+          <select id="country" name="country" required>
+            <option value="ukraine">Ukraine</option>
+            <option value="usa">USA</option>
+            <option value="uk">UK</option>
+          </select>
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" name="dob" required />
+
+          <div class="info-group">
+            <label class="group-label">Sex</label>
+            <div class="radio-group">
+                <label>Male<input type="radio" name="sex" value="male" required /></label>
+                <label>Female<input type="radio" name="sex" value="female" /></label>
+            </div>
+        </div>
+
+
+          <div class="info-group">
+            <label for="bg-color">Background color</label>
+            <input type="color" id="bg-color" name="bg-color" required />
+          </div>
+        </div>
+
+        <div>
+          <label for="city">City</label>
+          <input type="text" id="city" name="city" required />
+
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" required />
+        </div>
+      </div>
+
+      <label for="notes">Notes (optional)</label>
+      <textarea id="notes" name="notes" rows="3"></textarea>
+
+      <button type="submit" class="submit-btn">Add</button>
+    </form>
+  </section>
+</main>
+
+</body>
+</html>

@@ -291,21 +291,44 @@ header .top-row .search-form button:hover {
   padding: 4rem 2rem;
 }
 
-.teacher-profile {
+/* Shared popup card style */
+.teacher-profile,
+.teacher-form {
   background-color: white;
-  padding: 2rem;
-  border-radius: 6px;
+  padding: 0;
+  border-radius: 1px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
-  text-align: center;
-}
-.teacher-profile .teacher-avatar {
-  width: 7em;
-  height: 7em;
-  border-radius: 50%;
-  border: 2px solid #f77361;
-  margin: 0 auto 1rem;
+  width: 45%;
+  text-align: left;
   overflow: hidden;
+}
+.teacher-profile .popup-title,
+.teacher-form .popup-title {
+  background-color: rgb(86.25, 86.25, 86.25);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem 0.6rem;
+}
+.teacher-profile .popup-title h1,
+.teacher-form .popup-title h1 {
+  font-size: 1rem;
+  font-weight: normal;
+  margin: 0;
+}
+.teacher-profile .popup-title .close-btn,
+.teacher-form .popup-title .close-btn {
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+/* Teacher Profile Specific */
+.teacher-profile .teacher-avatar {
+  width: 11em;
+  height: 12em;
+  margin: 1rem;
+  float: left;
 }
 .teacher-profile .teacher-avatar img {
   width: 100%;
@@ -314,31 +337,139 @@ header .top-row .search-form button:hover {
      object-fit: cover;
   display: block;
 }
-.teacher-profile h2 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+.teacher-profile header {
+  color: #222222;
+  display: flex;
+  justify-content: space-between;
 }
-.teacher-profile .subject,
+.teacher-profile header h2 {
+  font-size: 1.5rem;
+  margin: 1rem 0 1.2rem;
+  font-weight: normal;
+}
+.teacher-profile header .favourite {
+  font-size: 2.2rem;
+  color: #fafac0;
+  padding: 0.8rem;
+}
 .teacher-profile .location,
-.teacher-profile .email {
-  font-size: 0.9rem;
-  color: #888888;
+.teacher-profile .age-sex,
+.teacher-profile .telephone {
+  font-size: 0.6rem;
+  color: #222222;
   margin-bottom: 0.25rem;
+  line-height: 1.2rem;
+}
+.teacher-profile .email {
+  display: block;
+  font-size: 0.6rem;
+  color: #1ab7d5;
+  margin-bottom: 0.25rem;
+  line-height: 1.2rem;
+  text-decoration: none;
+}
+.teacher-profile .email:hover {
+  color: #1096d0;
+}
+.teacher-profile .subject {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #222222;
+  margin-bottom: 0.7rem;
 }
 .teacher-profile .bio {
-  font-size: 0.85rem;
-  margin: 1rem 0;
+  clear: both;
+  font-size: 0.6rem;
+  margin: 1rem 1rem 0.5rem;
   line-height: 1.4;
 }
 .teacher-profile .back-button {
+  clear: both;
   display: inline-block;
-  margin-top: 1rem;
-  font-size: 0.9rem;
+  margin: 0 1rem 1rem;
+  font-size: 0.6rem;
   color: #1ab7d5;
-  text-decoration: none;
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 0.1rem;
 }
 .teacher-profile .back-button:hover {
   color: #1096d0;
+}
+
+/* Add Teacher Form */
+.teacher-form {
+  width: 30%;
+}
+.teacher-form form {
+  padding: 1rem;
+}
+.teacher-form form label {
+  display: block;
+  font-size: 0.7rem;
+  margin-top: 0.6rem;
+  margin-bottom: 0.2rem;
+  color: #888888;
+}
+.teacher-form form input,
+.teacher-form form select,
+.teacher-form form textarea {
+  width: 100%;
+  padding: 0.4rem;
+  font-size: 0.7rem;
+  border: 1px solid #888888;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+.teacher-form form .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.teacher-form form .form-grid .radio-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.2rem;
+  font-size: 0.7rem;
+}
+.teacher-form form .form-grid .radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  color: #222222;
+}
+.teacher-form form .form-grid input[type=color] {
+  padding: 0.1rem;
+  height: 1rem;
+  width: 2rem;
+}
+.teacher-form form .form-grid .info-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+}
+.teacher-form form .form-grid .info-group label {
+  text-wrap: nowrap;
+}
+.teacher-form form .submit-btn {
+  font-size: 0.9rem;
+  padding: 0.6em 1.2em;
+  color: #f77361;
+  background-color: white;
+  border: 1px solid #f77361;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+.teacher-form form .submit-btn:hover {
+  color: white;
+  background-color: #f77361;
 }
 
 @media (max-width: 768px) {
