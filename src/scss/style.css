@@ -547,6 +547,12 @@ header .top-row .search-form button:hover {
     width: 100%;
     justify-content: center;
   }
+  .teacher-form {
+    width: 80%;
+  }
+  .teacher-profile {
+    width: 80%;
+  }
 }
 .filter-list {
   display: flex;
