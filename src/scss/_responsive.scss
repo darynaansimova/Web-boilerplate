@@ -1,0 +1,48 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+@media (max-width: 768px) {
+
+    main.container {
+        margin-right: 5%;
+        margin-left: 5%;
+    }
+
+    html{
+        font-size: clamp(10px, 2.5vw, 16px);
+    }
+
+  .teachers-grid{
+    @include grid(3);
+  }
+
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+  .menu{
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .logo {
+    align-self: flex-start;
+  }
+
+  .search-form {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .teacher-form {
+    width: 80%;
+  }
+  .teacher-profile {
+    width: 80%;
+  }
+}

@@ -1,0 +1,94 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+header {
+  color: v.$primary-color;
+
+  .header-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo {
+      font-family: "Times New Roman", Times, serif;
+      text-decoration: none;
+      transform: scaleX(1.2);
+      transform-origin: left;
+      font-size: 2.3rem;
+      font-weight: bold;
+      color: v.$background-color;
+      text-shadow: 
+      1px 1px 0.5px v.$text-color,
+      -1px -1px 0.5px v.$primary-color;
+      &:hover {
+        color: v.$light-gray;
+        text-shadow: 
+        1.5px 1.5px 0.5px v.$text-color,
+        -1.5px -1.5px 0.5px v.$primary-color;
+      }
+    }
+
+    .search-form {
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 0.5rem;
+        input {
+            font-size: 0.8rem;
+        }
+
+        input {
+            flex: 0 0 60%;
+            max-width: 30rem;
+            min-width: 12rem;
+            transition: flex-basis 0.3s ease;
+
+            &:focus,
+            &:hover {
+            flex-basis: 100%;
+            }
+        }
+
+        button {
+            @include m.button-style(0.7rem);
+            flex-shrink: 0;
+        }
+    }
+
+  }
+}
+  .menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 1rem 0;
+
+    .main-nav ul {
+      display: flex;
+      gap: 1.5rem;
+
+      li a {
+        color: v.$primary-color;
+        padding: 0.5rem 0;
+        text-decoration: none;
+
+        &:hover {
+          color: v.$primary-color-dark;
+        }
+      }
+    }
+
+    #add-teacher-btn {
+      @include m.button-style(1rem);
+    }
+  }
+  .footer-menu {
+    font-weight: normal;
+  }
