@@ -2,6 +2,7 @@
   "name": "lab_boilerplate",
   "description": "",
   "main": "./src/index.js",
+  "type": "module",
   "scripts": {
     "start": "node express.js",
     "build": "rm -f build && cross-env NODE_ENV=production webpack --progress",
