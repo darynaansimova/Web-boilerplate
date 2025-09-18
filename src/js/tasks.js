@@ -25,117 +25,186 @@ const getRandomColor = () => {
   ).join("");
 };
 
-function mergeUsers(apiUsers, extraUsers) {
-  const merged = apiUsers.map(u => {
-    const match = extraUsers.find(eu =>
-      eu.full_name === `${u.name.first} ${u.name.last}` && eu.email === u.email
-    );
-
-    return {
-      gender: u.gender,
-      title: u.name.title,
-      full_name: `${u.name.first} ${u.name.last}`,
-      city: u.location.city,
-      state: u.location.state,
-      country: u.location.country,
-      postcode: u.location.postcode,
-      coordinates: u.location.coordinates,
-      timezone: u.location.timezone,
-      email: u.email,
-      b_date: u.dob.date,
-      age: u.dob.age,
-      phone: u.phone,
-      picture_large: u.picture.large,
-      picture_thumbnail: u.picture.thumbnail,
-      id: match?.id || getRandomId(),
-      favorite: match?.favorite ?? false,
-      course: match?.course || getRandomCourse(),
-      bg_color: match?.bg_color || getRandomColor(),
-      note: match?.note || "Note about user"
-    };
-  });
-
-  extraUsers.forEach(eu => {
-    const exists = merged.some(mu =>
-      mu.full_name === eu.full_name && mu.email === eu.email
-    );
-    if (!exists) merged.push(eu);
-  });
-
-  return merged;
+function getAllUsers(apiUsers, extraUsers) {
+  const rawUsers = [...apiUsers, ...extraUsers].map(normalizeUser);
+  const uniqueUsers = deduplicateUsers(rawUsers);
+  return uniqueUsers.map(enrichUser);
 }
 
+function normalizeUser(u) {
+  return {
+    gender: String(u.gender ?? ""),
+    title: String(u.name?.title ?? u.title ?? ""),
+    full_name: String(
+      u.full_name ??
+      `${u.name?.first ?? u.firstName ?? ""} ${u.name?.last ?? u.lastName ?? ""}`
+    ).trim(),
+    city: String(u.location?.city ?? u.city ?? ""),
+    state: String(u.location?.state ?? u.state ?? ""),
+    country: String(u.location?.country ?? u.country ?? ""),
+    postcode: String(u.location?.postcode ?? u.postcode ?? ""),
+    coordinates: typeof u.location?.coordinates === "object"
+      ? u.location.coordinates
+      : typeof u.coordinates === "object"
+      ? u.coordinates
+      : { latitude: "", longitude: "" },
+    timezone: typeof u.location?.timezone === "object"
+      ? u.location.timezone
+      : typeof u.timezone === "object"
+      ? u.timezone
+      : { offset: "", description: "" },
+    email: String(u.email ?? ""),
+    b_date: new Date(u.dob?.date ?? u.b_date ?? NaN),
+    age: Number(u.dob?.age ?? u.age ?? NaN),
+    phone: String(u.phone ?? ""),
+    picture_large: String(u.picture?.large ?? u.picture_large ?? ""),
+    picture_thumbnail: String(u.picture?.thumbnail ?? u.picture_thumbnail ?? "")
+  };
+}
+
+function deduplicateUsers(users) {
+  const seen = new Map();
+
+  users.forEach(u => {
+    const key = u.full_name.toLowerCase();
+    const existing = seen.get(key);
+
+    if (existing) {
+      const merged = { ...existing };
+      for (const field in u) {
+        const val = u[field];
+        if (val !== undefined && val !== null && val !== "") {
+          merged[field] = val;
+        }
+      }
+      seen.set(key, merged);
+    } else {
+      seen.set(key, u);
+    }
+  });
+
+  return [...seen.values()];
+}
+
+function enrichUser(u) {
+  return {
+    ...u,
+    id: String(u.id ?? getRandomId()),
+    favorite: Boolean(u.favorite),
+    course: String(u.course ?? getRandomCourse()),
+    bg_color: String(u.bg_color ?? getRandomColor()),
+    note: String(u.note ?? "")
+  };
+}
+
+
 // ===== TASK 2 =====
+
+const COUNTRY_NUM = {
+  "Ukraine": "+380", "Germany": "+49", "Ireland": "+353", "Australia": "+61",
+  "United States": "+1", "Finland": "+358", "Turkey": "+90", "Switzerland": "+41",
+  "New Zealand": "+64", "Spain": "+34", "Norway": "+47", "Denmark": "+45",
+  "Iran": "+98", "Canada": "+1", "France": "+33", "Netherlands": "+31",
+  "United Kingdom": "+44", "Poland": "+48"
+};
+
+const PHONE_BY_COUNTRY = {
+  "Ukraine": /^\+?380\d{9}$/, "Germany": /^\+?49\d{7,14}$/, "Ireland": /^\+?353\d{7,9}$/,
+  "Australia": /^\+?61\d{8,9}$/, "United States": /^\+?1\d{10}$/, "Canada": /^\+?1\d{10}$/,
+  "United Kingdom": /^\+?44\d{9,10}$/, "France": /^\+?33\d{8,9}$/, "Poland": /^\+?48\d{9}$/,
+  "Netherlands": /^\+?31\d{8,9}$/, "Finland": /^\+?358\d{6,10}$/, "Turkey": /^\+?90\d{10}$/,
+  "Switzerland": /^\+?41\d{9}$/, "New Zealand": /^\+?64\d{8,9}$/, "Spain": /^\+?34\d{9}$/,
+  "Norway": /^\+?47\d{8}$/, "Denmark": /^\+?45\d{8}$/, "Iran": /^\+?98\d{9,10}$/
+};
+
+
+function validateUsers(users) {
+  return users.map(u => normalizeUserFields(u)).map(validateUser).filter(u => u.valid);
+}
+
+function normalizeUserFields(user) {
+  const normalized = { ...user };
+
+  if (typeof normalized.gender === "string") {
+    const g = normalized.gender.trim();
+    normalized.gender = g ? g.charAt(0).toUpperCase() + g.slice(1).toLowerCase() : "";
+  }
+
+  if (typeof normalized.note === "string") {
+    const n = normalized.note.trim();
+    normalized.note = n ? n.charAt(0).toUpperCase() + n.slice(1) : "";
+  }
+
+  if (typeof normalized.phone === "string") {
+    let digits = normalized.phone.replace(/\D/g, "");
+    const prefix = COUNTRY_NUM[normalized.country];
+    if (prefix) {
+      if (digits.startsWith("0")) digits = digits.slice(1);
+      normalized.phone = prefix + digits;
+    } else {
+      normalized.phone = "+" + digits;
+    }
+  }
+
+  return normalized;
+}
 
 function validateUser(user) {
   const errors = [];
 
-  const validateStringField = (val, label) => {
-    if (typeof val !== "string" || val[0] !== val[0]?.toUpperCase()) {
+  const checkCapital = (val, label) => {
+    if (typeof val !== "string" || !/^\p{Lu}/u.test(val.trim())) {
       errors.push(`${label} повинно бути рядком і починатися з великої літери.`);
     }
   };
 
-  const validateGender = (val, label) => {
+  const checkGender = val => {
     if (typeof val !== "string") {
-      errors.push(`${label} повинно бути рядком.`);
+      errors.push("Gender повинно бути рядком.");
     }
   };
 
-  const validateAge = age => {
-    if (typeof age !== "number") {
-      errors.push("Вік повинен бути числом.");
+  const checkAge = val => {
+    if (typeof val !== "number" || !Number.isFinite(val)) {
+      errors.push("Вік повинен бути валідним числом.");
     }
   };
 
-  const validateAndFormatPhone = phone => {
-    const raw = phone ? String(phone) : "";
-    const formatted = raw.replace(/[\s\-()]/g, "");
-    const phoneRegex = /^\+?\d+$/;
-
-    if (!phone) {
-      errors.push("Номер телефону відсутній.");
-    } else {
-      if (!phoneRegex.test(formatted)) {
-        errors.push(`Номер телефону ${phone} повинен містити тільки цифри і може починатися з +.`);
-      }
-      if (formatted.length < 8 || formatted.length > 16) {
-        errors.push(`Номер телефону ${phone} повинен містити від 10 до 15 цифр.`);
-      }
-    }
-    return formatted;
-  };
-
-  const validateEmail = email => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+  const checkEmail = val => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(val)) {
       errors.push("Email має бути у форматі example@example.com.");
     }
   };
 
-  validateStringField(user.full_name, "Full name");
-  validateGender(user.gender, "Gender");
-  validateStringField(user.state, "State");
-  validateStringField(user.city, "City");
-  validateStringField(user.country, "Country");
+  const checkPhone = (country, phone) => {
+    const pattern = PHONE_BY_COUNTRY[country];
+    if (!pattern || !pattern.test(phone)) {
+      errors.push(`Номер телефону не відповідає формату країни: ${country}.`);
+    }
+  };
 
-  validateAge(user.age);
-  validateEmail(user.email);
-  user.phone = validateAndFormatPhone(user.phone);
+  checkCapital(user.full_name, "Full name");
+  checkCapital(user.state, "State");
+  checkCapital(user.city, "City");
+  checkCapital(user.country, "Country");
+  checkGender(user.gender);
+  checkAge(user.age);
+  checkEmail(user.email);
+  checkPhone(user.country, user.phone);
 
-  return { valid: errors.length === 0, errors };
+  if (typeof user.note !== "string") {
+    errors.push("Note повинна бути рядком.");
+  } else if (user.note.trim() !== "") {
+    checkCapital(user.note, "Note");
+  }
+
+  return {
+    ...user,
+    valid: errors.length === 0,
+    errors
+  };
 }
-
-const validateAllUsers = users =>
-  users.map((u, idx) => {
-    const res = validateUser(u);
-    return {
-      userIndex: idx,
-      valid: res.valid,
-      errors: res.errors,
-      message: res.valid ? "Valid" : "Invalid"
-    };
-  });
 
 // ===== TASK 3 =====
 
@@ -202,16 +271,14 @@ const getMatchingPercentage = (users, searchParam) =>
 
 // ===== EXECUTION =====
 
-const mergedUsers = mergeUsers(randomUserMock, additionalUsers);
-const validationResults = validateAllUsers(mergedUsers);
-const validatedUsers = mergedUsers.filter((_, i) => validationResults[i].valid);
+const mergedUsers = getAllUsers(randomUserMock, additionalUsers);
+const validatedUsers = validateUsers(mergedUsers);
 
 const filteredUsers1 = filterUsers(validatedUsers, filters3);
-const sortedByName = sortUsers(validatedUsers, "full_name", true);
+const sortedByName = sortUsers(validatedUsers, "full_name", false);
 const sortedByAgeDesc = sortUsers(validatedUsers, "age", false);
-const sortedByBday = sortUsers(validatedUsers, "b_date", true);
 const sortedByCountryDesc = sortUsers(validatedUsers, "country", false);
-const findUsers1 = findUsers(validatedUsers, "Norb+Germany+526");
-const percentageByName = getMatchingPercentage(validatedUsers, "n");
+const findUsers1 = findUsers(mergedUsers, "Norb+Germany+526");
+const percentageByName = getMatchingPercentage(validatedUsers, "no");
 
-console.log(validatedUsers);
+console.log(findUsers1);
