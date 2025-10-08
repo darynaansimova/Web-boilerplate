@@ -116,7 +116,7 @@ header .top-row .search-form button:hover {
 .menu .main-nav ul li a:hover {
   color: #cf4836;
 }
-.menu #add-teacher-btn {
+.menu .add-teacher-btn {
   font-size: 1rem;
   padding: 0.6em 1.2em;
   color: #f77361;
@@ -125,7 +125,7 @@ header .top-row .search-form button:hover {
   font-weight: bold;
   text-decoration: none;
 }
-.menu #add-teacher-btn:hover {
+.menu .add-teacher-btn:hover {
   color: white;
   background-color: #f77361;
 }
@@ -148,6 +148,7 @@ header .top-row .search-form button:hover {
 }
 
 .teacher-card {
+  position: relative;
   padding: 1rem;
   text-align: center;
   line-height: 1.4;
@@ -199,6 +200,20 @@ header .top-row .search-form button:hover {
   align-items: center;
   justify-content: center;
 }
+.teacher-card .favorite-btn {
+  font-size: 2.5rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 100;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fafac0;
+}
+.teacher-card .favorite-btn.active {
+  color: #ecec02;
+}
 .teacher-card h3 {
   font-weight: bold;
   font-size: 1rem;
@@ -238,16 +253,32 @@ header .top-row .search-form button:hover {
   font-size: 1rem;
   background-color: white;
   transition: background-color 0.2s ease;
+  cursor: pointer;
 }
 #statistics .stats-table th:hover {
   background-color: #f9f5f9;
   border-bottom: 2px solid #222222;
 }
 #statistics .stats-table th:hover::after {
-  content: "↓";
+  content: " ↓";
   margin-left: 0.5rem;
   font-size: 0.8rem;
-  color: #1096d0;
+  color: #1ab7d5;
+  font-weight: bold;
+}
+#statistics .stats-table th.sorted-asc::after {
+  content: " ↑";
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  color: #222222;
+  font-weight: bold;
+}
+#statistics .stats-table th.sorted-desc::after {
+  content: " ↓";
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  color: #222222;
+  font-weight: bold;
 }
 #statistics .stats-table tbody tr:nth-child(odd) {
   background-color: white;
@@ -323,13 +354,25 @@ header .top-row .search-form button:hover {
   right: -2.5rem;
 }
 
-.popup-page {
-  background-color: #fcfcfc;
-  font-family: "Roboto", sans-serif;
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4rem 2rem;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.popup-overlay.active {
+  visibility: visible;
 }
 
 /* Shared popup card style */
@@ -370,6 +413,9 @@ header .top-row .search-form button:hover {
   height: 12em;
   margin: 1rem;
   float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .teacher-profile .teacher-avatar img {
   width: 100%;
@@ -377,6 +423,18 @@ header .top-row .search-form button:hover {
   -o-object-fit: cover;
      object-fit: cover;
   display: block;
+}
+.teacher-profile .teacher-avatar .teacher-initials {
+  float: left;
+  border: none;
+  background-color: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #f77361;
+  text-transform: uppercase;
 }
 .teacher-profile header {
   color: #222222;
@@ -392,9 +450,10 @@ header .top-row .search-form button:hover {
   font-size: 2.2rem;
   color: #fafac0;
   padding: 0.8rem;
+  cursor: pointer;
 }
 .teacher-profile .location,
-.teacher-profile .age-sex,
+.teacher-profile .age-gender,
 .teacher-profile .telephone {
   font-size: 0.6rem;
   color: #222222;
@@ -433,6 +492,8 @@ header .top-row .search-form button:hover {
   text-decoration-line: underline;
   text-decoration-style: dashed;
   text-underline-offset: 0.1rem;
+  background-color: white;
+  border: none;
 }
 .teacher-profile .back-button:hover {
   color: #1096d0;
@@ -584,7 +645,7 @@ header .top-row .search-form button:hover {
   padding: 0.4rem 0.3rem;
   border-radius: 0;
   border: 1px solid #222222;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #222222;
   max-width: 100px;
 }

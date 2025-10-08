@@ -85,7 +85,7 @@ header {
       }
     }
 
-    #add-teacher-btn {
+    .add-teacher-btn {
       @include m.button-style(1rem);
     }
   }

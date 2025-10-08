@@ -14,8 +14,8 @@
             <div class="top-row">
                 <a href="#" class="logo">Teachinder</a>
                 <form class="search-form">
-                    <button type="submit">Search</button>
-                    <input type="text" placeholder="Name, note or age to search">
+                    <button id="search-button" type="submit">Search</button>
+                    <input id="search-line" type="text" placeholder="Name, note or age to search">
                 </form>
             </div>
 
@@ -28,7 +28,7 @@
                     <li><a href="#about">About</a></li>
                     </ul>
                 </nav>
-                <a href="#" id="add-teacher-btn">Add teacher</a>
+                <a href="#" class="add-teacher-btn">Add teacher</a>
             </div>
         </div>
         </header>
@@ -39,22 +39,25 @@
                 <div class="filter-group">
                     <label for="age-filter">Age</label>
                     <select id="age-filter">
+                        <option>All</option>
                         <option>18-31</option>
                         <option>32-45</option>
                         <option>46+</option>
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label for="region-filter">Region</label>
+                    <label for="region-filter">Country</label>
                     <select id="region-filter">
+                        <option>All</option>
                         <option>Europe</option>
                         <option>Asia</option>
                         <option>North America</option>
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label for="sex-filter">Sex</label>
-                    <select id="sex-filter">
+                    <label for="gender-filter">Gender</label>
+                    <select id="gender-filter">
+                        <option>All</option>
                         <option>Male</option>
                         <option>Female</option>
                     </select>
@@ -84,84 +87,6 @@
                         <p class="teacher-country">UK</p>
                     </div>
                 </div>
-                <div class="teacher-card">
-                    <div class="teacher-info">
-                        <div class="teacher-avatar">
-                            <div class="teacher-initials">R.A.</div>
-                        </div>
-                        <h3>
-                            <p class="teacher-name">Rachel</p>
-                            <p class="teacher-surname">Andrew</p>
-                        </h3>
-                        <p class="teacher-specialty">Medicine</p>
-                        <p class="teacher-country">UK</p>
-                    </div>
-                </div>
-                <div class="teacher-card">
-                    <div class="teacher-info">
-                        <div class="teacher-avatar">
-                            <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Teacher Photo" onerror="this.style.display='none'" />
-                        </div>
-                        <h3>
-                            <p class="teacher-name">Rachel</p>
-                            <p class="teacher-surname">Andrew</p>
-                        </h3>
-                        <p class="teacher-specialty">Medicine</p>
-                        <p class="teacher-country">UK</p>
-                    </div>
-                </div>
-                <div class="teacher-card">
-                    <div class="teacher-info">
-                        <div class="teacher-avatar">
-                            <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Teacher Photo" onerror="this.style.display='none'" />
-                        </div>
-                        <h3>
-                            <p class="teacher-name">Rachel</p>
-                            <p class="teacher-surname">Andrew</p>
-                        </h3>
-                        <p class="teacher-specialty">Medicine</p>
-                        <p class="teacher-country">UK</p>
-                    </div>
-                </div>
-                <div class="teacher-card">
-                    <div class="teacher-info">
-                        <div class="teacher-avatar">
-                            <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Teacher Photo" onerror="this.style.display='none'" />
-                        </div>
-                        <h3>
-                            <p class="teacher-name">Rachel</p>
-                            <p class="teacher-surname">Andrew</p>
-                        </h3>
-                        <p class="teacher-specialty">Medicine</p>
-                        <p class="teacher-country">UK</p>
-                    </div>
-                </div>
-                <div class="teacher-card">
-                    <div class="teacher-info">
-                        <div class="teacher-avatar">
-                            <div class="teacher-initials">R.A.</div>
-                        </div>
-                        <h3>
-                            <p class="teacher-name">Rachel</p>
-                            <p class="teacher-surname">Andrew</p>
-                        </h3>
-                        <p class="teacher-specialty">Medicine</p>
-                        <p class="teacher-country">UK</p>
-                    </div>
-                </div>
-                <div class="teacher-card">
-                    <div class="teacher-info">
-                        <div class="teacher-avatar">
-                            <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Teacher Photo" onerror="this.style.display='none'" />
-                        </div>
-                        <h3>
-                            <p class="teacher-name">Rachel</p>
-                            <p class="teacher-surname">Andrew</p>
-                        </h3>
-                        <p class="teacher-specialty">Medicine</p>
-                        <p class="teacher-country">UK</p>
-                    </div>
-                </div>
             </div>
         </section>
         <hr>
@@ -170,11 +95,12 @@
             <table class="stats-table">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Speciality</th>
-                        <th>Age</th>
-                        <th>Gender</th>
-                        <th>Nationality</th>
+                      <th data-field="full_name">Name</th>
+                      <th data-field="course">Speciality</th>
+                      <th data-field="age">Age</th>
+                      <th data-field="gender">Gender</th>
+                      <th data-field="country">Nationality</th>
+                      <th data-field="b_date">Birth Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -277,66 +203,6 @@
                             <p class="teacher-country">UK</p>
                         </div>
                     </div>
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="teacher-avatar">
-                                <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Teacher Photo" onerror="this.style.display='none'" />
-                            </div>
-                            <h3>
-                                <p class="teacher-name">Rachel</p>
-                                <p class="teacher-surname">Andrew</p>
-                            </h3>
-                            <p class="teacher-country">UK</p>
-                        </div>
-                    </div>
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="teacher-avatar">
-                                <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Teacher Photo" onerror="this.style.display='none'" />
-                            </div>
-                            <h3>
-                                <p class="teacher-name">Rachel</p>
-                                <p class="teacher-surname">Andrew</p>
-                            </h3>
-                            <p class="teacher-country">UK</p>
-                        </div>
-                    </div>
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="teacher-avatar">
-                                <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Teacher Photo" onerror="this.style.display='none'" />
-                            </div>
-                            <h3>
-                                <p class="teacher-name">Rachel</p>
-                                <p class="teacher-surname">Andrew</p>
-                            </h3>
-                            <p class="teacher-country">UK</p>
-                        </div>
-                    </div>
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="teacher-avatar">
-                                <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Teacher Photo" onerror="this.style.display='none'" />
-                            </div>
-                            <h3>
-                                <p class="teacher-name">Rachel</p>
-                                <p class="teacher-surname">Andrew</p>
-                            </h3>
-                            <p class="teacher-country">UK</p>
-                        </div>
-                    </div>
-                    <div class="teacher-card">
-                        <div class="teacher-info">
-                            <div class="teacher-avatar">
-                                <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Teacher Photo" onerror="this.style.display='none'" />
-                            </div>
-                            <h3>
-                                <p class="teacher-name">Rachel</p>
-                                <p class="teacher-surname">Andrew</p>
-                            </h3>
-                            <p class="teacher-country">UK</p>
-                        </div>
-                    </div>
                 </div>
                 <button class="arrow right" aria-label="Scroll right">›</button>
             </div>
@@ -358,8 +224,9 @@
                 <li><a href="#about">About</a></li>
                 </ul>
             </nav>
-            <a href="#" id="add-teacher-btn">Add teacher</a>
+            <a href="#" class="add-teacher-btn">Add teacher</a>
         </div>
     </main>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>
