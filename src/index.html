@@ -1,21 +1,232 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachinder - Find Teachers Worldwide</title>
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="scss/style.css">
+</head>
+<body>
+    <main class="container">
+    <header>
+        <div class="container header-container">
+            <div class="top-row">
+                <a href="#" class="logo">Teachinder</a>
+                <form class="search-form">
+                    <button id="search-button" type="submit">Search</button>
+                    <input id="search-line" type="text" placeholder="Name, note or age to search">
+                </form>
+            </div>
 
-   <head itemscope itemtype="http://schema.org/WebSite">
-
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <meta name="msapplication-tap-highlight" content="no">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-
-      <title>Project</title>
-
-      <link rel="stylesheet" href="./css/app.css">
-
-   </head>
-
-   <body itemscope itemtype="http://schema.org/WebPage">
-      <script type="text/javascript" src="./js/app.js"></script>
-      
-  </body>
+            <div class="menu">
+                <nav class="main-nav">
+                    <ul>
+                    <li><a href="#teachers">Teachers</a></li>
+                    <li><a href="#statistics">Statistics</a></li>
+                    <li><a href="#favorites">Favorites</a></li>
+                    <li><a href="#about">About</a></li>
+                    </ul>
+                </nav>
+                <a href="#" class="add-teacher-btn">Add teacher</a>
+            </div>
+        </div>
+        </header>
+        <hr>
+        <section class="filters">
+            <h2>Top Teachers</h2>
+            <div class="filter-list">
+                <div class="filter-group">
+                    <label for="age-filter">Age</label>
+                    <select id="age-filter">
+                        <option>All</option>
+                        <option>18-31</option>
+                        <option>32-45</option>
+                        <option>46+</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="region-filter">Country</label>
+                    <select id="region-filter">
+                        <option>All</option>
+                        <option>Europe</option>
+                        <option>Asia</option>
+                        <option>North America</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="gender-filter">Gender</label>
+                    <select id="gender-filter">
+                        <option>All</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                </div>
+                <div class="filter-group checkbox-group">
+                    <input type="checkbox" id="photo-only">
+                    <label for="photo-only">Only with photo</label>
+                </div>
+                <div class="filter-group checkbox-group">
+                    <input type="checkbox" id="favorites-only">
+                    <label for="favorites-only">Only favorites</label>
+                </div>
+            </div>
+        </section>
+        <section id="teachers">
+            <div class="teachers-grid">
+                <div class="teacher-card">
+                    <div class="teacher-info">
+                        <div class="teacher-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Teacher Photo" onerror="this.style.display='none'" />
+                        </div>
+                        <h3>
+                            <p class="teacher-name">Rachel</p>
+                            <p class="teacher-surname">Andrew</p>
+                        </h3>
+                        <p class="teacher-specialty">Medicine</p>
+                        <p class="teacher-country">UK</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <hr>
+        <section id="statistics">
+            <h2 class="section-title">Statistics</h2>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                      <th data-field="full_name">Name</th>
+                      <th data-field="course">Speciality</th>
+                      <th data-field="age">Age</th>
+                      <th data-field="gender">Gender</th>
+                      <th data-field="country">Nationality</th>
+                      <th data-field="b_date">Birth Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Daisy Alexander</td>
+                        <td>Chemistry</td>
+                        <td>28</td>
+                        <td>Female</td>
+                        <td>Vietnam</td>
+                    </tr>
+                    <tr>
+                        <td>Julia Bradley</td>
+                        <td>Math</td>
+                        <td>26</td>
+                        <td>Female</td>
+                        <td>USA</td>
+                    </tr>
+                    <tr>
+                        <td>Rita Hart</td>
+                        <td>Art</td>
+                        <td>41</td>
+                        <td>Female</td>
+                        <td>Ireland</td>
+                    </tr>
+                    <tr>
+                        <td>Jonathan Jacobs</td>
+                        <td>Math</td>
+                        <td>32</td>
+                        <td>Male</td>
+                        <td>England</td>
+                    </tr>
+                    <tr>
+                        <td>Nathaniel White</td>
+                        <td>Computer Science</td>
+                        <td>37</td>
+                        <td>Male</td>
+                        <td>Austria</td>
+                    </tr>
+                    <tr>
+                        <td>Frank Medina</td>
+                        <td>English</td>
+                        <td>43</td>
+                        <td>Male</td>
+                        <td>Italy</td>
+                    </tr>
+                    <tr>
+                        <td>Ella Curtis</td>
+                        <td>Chess</td>
+                        <td>34</td>
+                        <td>Female</td>
+                        <td>USA</td>
+                    </tr>
+                    <tr>
+                        <td>Claire Simmmons</td>
+                        <td>Art</td>
+                        <td>38</td>
+                        <td>Female</td>
+                        <td>Netherlands</td>
+                    </tr>
+                    <tr>
+                        <td>Benjamin Knight</td>
+                        <td>Biology</td>
+                        <td>44</td>
+                        <td>Male</td>
+                        <td>Scotland</td>
+                    </tr>
+                    <tr>
+                        <td>Norma Rose</td>
+                        <td>Statistics</td>
+                        <td>36</td>
+                        <td>Female</td>
+                        <td>France</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="pagination">
+                <a href="#">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">...</a>
+                <a href="#">Last</a>
+            </div>
+        </section>
+        <hr>
+        <section id="favorites">
+            <h2 class="section-title">Favorites</h2>
+            <div class="carousel-container">
+                <button class="arrow left" aria-label="Scroll left">‹</button>
+                <div class="favorites-carousel">
+                    <div class="teacher-card">
+                        <div class="teacher-info">
+                            <div class="teacher-avatar">
+                                <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Teacher Photo" onerror="this.style.display='none'" />
+                            </div>
+                            <h3>
+                                <p class="teacher-name">Rachel</p>
+                                <p class="teacher-surname">Andrew</p>
+                            </h3>
+                            <p class="teacher-country">UK</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="arrow right" aria-label="Scroll right">›</button>
+            </div>
+            <hr>
+        </section>
+        <section id="about">
+            <div class="about-text">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque facere, hic imperit lisiure molestiae sit tempora? Es in moltidia natus return voluptate. Es ex exercit id texce tempora. Aliquam etiam est inc imperit iusto natus quaerat rafone sit? Culpa iusto optio volupta voluptate. Enim erentet fugit tur e maluce molestiae, praesentum quia.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam eligendi illum in inventeur ipsum odio officis omnis quisquam sed tempora?</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque esse expedia id iusto moltilia, odit sint utlam vertadis vero?</p>
+            </div>
+        </section>
+        <div class="menu footer-menu">
+            <nav class="main-nav">
+                <ul>
+                <li><a href="#teachers">Teachers</a></li>
+                <li><a href="#statistics">Statistics</a></li>
+                <li><a href="#favorites">Favorites</a></li>
+                <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+            <a href="#" class="add-teacher-btn">Add teacher</a>
+        </div>
+    </main>
+    <script type="module" src="js/app.js"></script>
+</body>
 </html>
