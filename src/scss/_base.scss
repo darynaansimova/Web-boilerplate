@@ -37,3 +37,32 @@ h2{
     font-weight: bold;
     margin: 2rem;
 }
+
+.pagination {
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+
+    button, span {
+      font-size: 0.9rem;
+      padding: 0.5rem 0.5rem;
+      cursor: pointer;
+      color: $link-color;
+      text-decoration: none;
+      background-color: white;
+      border: none;
+
+      &:hover {
+        color: $link-hover-color;
+      }
+      &:active {
+        color: $text-color;
+      }
+    }
+  }
+  .load-more-btn {
+    display: none;
+    margin: 1rem auto 2rem auto;
+    @include button-style(0.9rem);
+
+  }

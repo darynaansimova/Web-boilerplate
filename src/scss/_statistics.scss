@@ -3,6 +3,10 @@
 
 #statistics {
   margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   .stats-table {
     width: 100%;
@@ -66,25 +70,8 @@
       }
     }
   }
-
-  .pagination {
-    font-size: 0.7rem;
-    display: flex;
-    justify-content: left;
-    margin-top: 1rem;
-
-    a {
-      padding: 0.5rem 0.5rem;
-      cursor: pointer;
-      color: $link-color;
-      text-decoration: none;
-
-      &:hover {
-        color: $link-hover-color;
-      }
-      &:active {
-        color: $text-color;
-      }
-    }
+  .show-more-stats-btn {
+    margin: 1rem auto 2rem auto;
+    @include button-style(0.9rem);
   }
 }
