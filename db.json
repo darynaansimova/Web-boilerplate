@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "id": "STK273664224",
+      "gender": "male",
+      "title": "",
+      "full_name": "Azvgh sdfs",
+      "city": "Fhfh",
+      "state": "Dhgg",
+      "country": "Australia",
+      "postcode": "Hgjhgj",
+      "coordinates": {
+        "latitude": "",
+        "longitude": ""
+      },
+      "timezone": {
+        "offset": "",
+        "description": ""
+      },
+      "email": "d.ansimova@ukma.edu.ua",
+      "phone": "+6187987998",
+      "b_date": "2000-07-06T00:00:00.000Z",
+      "age": 25,
+      "picture_large": "",
+      "picture_thumbnail": "",
+      "course": "English",
+      "bg_color": "#67786a",
+      "note": "Ytuygjgj",
+      "favorite": false
+    }
+  ]
+}

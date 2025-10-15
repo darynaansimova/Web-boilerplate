@@ -1,0 +1,77 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+#statistics {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .stats-table {
+    width: 100%;
+    border: none;
+    font-size: 0.8rem;
+    table-layout: fixed;
+
+    th, td {
+      padding: 0.75rem;
+      text-align: center;
+    }
+
+    th {
+      position: relative;
+      border-bottom: 1px solid $text-color;
+      font-size: 1rem;
+      background-color: white;
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+
+      // Base hover styles for all headers
+      &:hover {
+        background-color: $table-color;
+        border-bottom: 2px solid $text-color;
+        &::after {
+            content: ' ↓';
+            margin-left: 0.5rem;
+            font-size: 0.8rem;
+            color: $link-color;
+            font-weight: bold;
+        }
+      }
+
+      
+
+      // Styles for actively sorted columns
+      &.sorted-asc::after {
+        content: ' ↑';
+        margin-left: 0.5rem;
+        font-size: 0.8rem;
+        color: $text-color;
+        font-weight: bold;
+      }
+
+      &.sorted-desc::after {
+        content: ' ↓';
+        margin-left: 0.5rem;
+        font-size: 0.8rem;
+        color: $text-color;
+        font-weight: bold;
+      }
+    }
+
+    tbody {
+      tr:nth-child(odd) {
+        background-color: white;
+      }
+
+      tr:nth-child(even) {
+        background-color: $table-color;
+      }
+    }
+  }
+  .show-more-stats-btn {
+    margin: 1rem auto 2rem auto;
+    @include button-style(0.9rem);
+  }
+}

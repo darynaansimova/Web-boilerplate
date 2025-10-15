@@ -1,0 +1,71 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.filter-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 1.5rem;
+
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-right: 1rem;
+    position: relative;
+    flex: 0 0 auto;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -0.5rem;
+      height: 100%;
+      width: 1.5px;
+      border-right: 1.5px dotted $text-color-light;
+    }
+
+    &:last-child::after {
+      display: none;
+    }
+
+    select {
+      padding: 0.4rem 0.3rem;
+      border-radius: 0;
+      border: 1px solid $text-color;
+      font-size: 0.7rem;
+      color: $text-color;
+      max-width: 100px;
+    }
+
+    input[type="checkbox"] {
+      accent-color: $primary-color;
+      cursor: pointer;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.8rem;
+      color: $text-color-light;
+    }
+  }
+
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.8rem;
+      color: $text-color-light;
+      &:hover {
+        color: $text-color;
+      }
+    }
+  }
+}

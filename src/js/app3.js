@@ -363,20 +363,8 @@ class TeacherManager {
 
   // ===== TASK 1: Display teachers with favorites functionality =====
   displayTeachers() {
-    if (!this.filteredTeachers || !Array.isArray(this.filteredTeachers)) {
-      this.filteredTeachers = [...this.teachers];
-    }
-
     const totalTeachers = this.filteredTeachers.length;
     const totalPages = Math.ceil(totalTeachers / this.itemsPerPage);
-
-    if (this.currentPage > totalPages && totalPages > 0) {
-      this.currentPage = totalPages;
-    }
-    if (this.currentPage < 1 && totalPages > 0) {
-      this.currentPage = 1;
-    }
-
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
     const teachersToShow = this.filteredTeachers.slice(start, end);
@@ -387,11 +375,7 @@ class TeacherManager {
     grid.innerHTML = '';
 
     if (teachersToShow.length === 0) {
-      grid.innerHTML = `<p class="no-teachers">No teachers found matching your criteria.</p>`;
-      this.renderPagination(0);
-      
-      const loadMoreBtn = document.querySelector('.load-more-btn');
-      if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+      grid.innerHTML = `<p class="no-teachers">No teachers found on this page.</p>`;
       return;
     }
 
@@ -401,57 +385,58 @@ class TeacherManager {
     });
 
     this.renderPagination(totalPages);
-    
-    const loadMoreBtn = document.querySelector('.load-more-btn');
-    if (loadMoreBtn) {
-      loadMoreBtn.style.display = this.currentPage < totalPages ? 'none' : 'flex';
+    if(this.currentPage === totalPages) {
+      document.querySelector('.load-more-btn').style.display = 'flex';
+    }
+    else{
+      document.querySelector('.load-more-btn').style.display = 'none';
     }
   }
 
   renderPagination(totalPages) {
-    const pagination = document.querySelector('.pagination');
-    if (!pagination) return;
+  const pagination = document.querySelector('.pagination');
+  if (!pagination) return;
 
-    pagination.innerHTML = '';
+  pagination.innerHTML = '';
 
-    const createBtn = (page, text = page) => {
-      const btn = document.createElement('button');
-      btn.textContent = text;
-      btn.className = 'page-btn';
-      if (page === this.currentPage) btn.classList.add('active');
-      btn.addEventListener('click', () => {
-        if (this.currentPage !== page) {
-          this.currentPage = page;
-          this.displayTeachers();
-        }
-      });
-      return btn;
-    };
-
-    pagination.appendChild(createBtn(1));
-
-    if (this.currentPage > 3) {
-      const dots = document.createElement('span');
-      dots.textContent = '...';
-      pagination.appendChild(dots);
-    }
-
-    for (let p = this.currentPage - 1; p <= this.currentPage + 1; p++) {
-      if (p > 1 && p < totalPages) {
-        pagination.appendChild(createBtn(p));
+  const createBtn = (page, text = page) => {
+    const btn = document.createElement('button');
+    btn.textContent = text;
+    btn.className = 'page-btn';
+    if (page === this.currentPage) btn.classList.add('active');
+    btn.addEventListener('click', () => {
+      if (this.currentPage !== page) {
+        this.currentPage = page;
+        this.displayTeachers();
       }
-    }
+    });
+    return btn;
+  };
 
-    if (this.currentPage < totalPages - 2) {
-      const dots = document.createElement('span');
-      dots.textContent = '...';
-      pagination.appendChild(dots);
-    }
+  pagination.appendChild(createBtn(1));
 
-    if (totalPages > 1) {
-      pagination.appendChild(createBtn(totalPages));
+  if (this.currentPage > 3) {
+    const dots = document.createElement('span');
+    dots.textContent = '...';
+    pagination.appendChild(dots);
+  }
+
+  for (let p = this.currentPage - 1; p <= this.currentPage + 1; p++) {
+    if (p > 1 && p < totalPages) {
+      pagination.appendChild(createBtn(p));
     }
   }
+
+  if (this.currentPage < totalPages - 2) {
+    const dots = document.createElement('span');
+    dots.textContent = '...';
+    pagination.appendChild(dots);
+  }
+
+  if (totalPages > 1) {
+    pagination.appendChild(createBtn(totalPages));
+  }
+}
 
 
   displayFavorites() {
@@ -576,7 +561,7 @@ class TeacherManager {
       const isFavorite = this.favorites.has(teacher.id);
       popupFavorite.textContent = isFavorite ? '★' : '☆';
       popupFavorite.title = isFavorite ? 'Remove from favourites' : 'Add to favourites';
-      //this.applyFilters({ resetPage: false }); 
+      this.applyFilters({ resetPage: false });
       const mainFavoriteBtn = document.querySelector(`.favorite-btn[data-id="${teacher.id}"]`);
       if (mainFavoriteBtn) {
         mainFavoriteBtn.classList.toggle('active', isFavorite);
@@ -625,6 +610,11 @@ class TeacherManager {
       button.title = isFavorite ? 'Add to favorites' : 'Remove from favorites';
     }
 
+  const popupStar = document.querySelector('.teacher-profile .favourite');
+  if (popupStar && popupStar.closest(`[data-id="${teacherId}"]`)) {
+    popupStar.textContent = isFavorite ? '☆' : '★';
+  }
+
     const teacher = this.teachers.find(t => t.id === teacherId);
     if (!teacher) return;
     teacher.favorite = !teacher.favorite;
@@ -634,19 +624,22 @@ class TeacherManager {
   }
 
   updateFavoritesDOM(teacher, added) {
-     const favoritesContainer = document.querySelector('.favorites-carousel');
-      if (!favoritesContainer) return; if (added) {
-         const msg = favoritesContainer.querySelector('.no-favorites'); 
-         if (msg) favoritesContainer.innerHTML = ''; 
-         favoritesContainer.appendChild(this.createTeacherCard(teacher)); 
-      } else { 
-          const card = favoritesContainer.querySelector(`[data-id="${teacher.id}"]`); 
-          if (card) card.remove(); 
-          if (favoritesContainer.children.length === 0) {
-             favoritesContainer.innerHTML = '<p class="no-favorites">No favorite teachers yet. Click the star to add some!</p>'; 
-          } 
-      } 
+    const favoritesContainer = document.querySelector('.favorites-carousel');
+    if (!favoritesContainer) return;
+
+    if (added) {
+      const msg = favoritesContainer.querySelector('.no-favorites');
+      if (msg) favoritesContainer.innerHTML = '';
+      favoritesContainer.appendChild(this.createTeacherCard(teacher));
+    } else {
+      const card = favoritesContainer.querySelector(`[data-id="${teacher.id}"]`);
+      if (card) card.remove();
+
+      if (favoritesContainer.children.length === 0) {
+        favoritesContainer.innerHTML = '<p class="no-favorites">No favorite teachers yet. Click the star to add some!</p>';
+      }
     }
+  }
 
   // ===== TASK 2: Filtering functionality =====
   setupFilterOptions() {
@@ -758,110 +751,85 @@ class TeacherManager {
     if (resetPage) this.currentPage = 1;
 
     this.filteredTeachers = results;
-    
     this.displayTeachers();
     this.displayStatistics();
   }
 
   // ===== TASK 3: Sorting functionality =====
   displayStatistics() {
-    const tbody = document.querySelector('.stats-table tbody');
-    if (!tbody) {
-      console.error('Statistics table body not found');
-      return;
-    }
+  const tbody = document.querySelector('.stats-table tbody');
+  if (!tbody) {
+    console.error('Statistics table body not found');
+    return;
+  }
 
-    tbody.innerHTML = '';
+  tbody.innerHTML = '';
 
-    if (!this.statsVisibleCount) this.statsVisibleCount = 10;
+  const teachersToDisplay = Array.isArray(this.filteredTeachers) ? this.filteredTeachers : [];
 
-    let teachersToDisplay = [...this.filteredTeachers];
-    
-    if (this.currentSort.field) {
-      teachersToDisplay = sortUsers(teachersToDisplay, this.currentSort.field, this.currentSort.direction);
-    }
+  if (teachersToDisplay.length === 0) {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 6;
+    td.textContent = 'No teacher data available';
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
 
-    this.usersToShow = teachersToDisplay.slice(0, this.statsVisibleCount);
+  const fragment = document.createDocumentFragment();
 
-    if (this.usersToShow.length === 0) {
-      const tr = document.createElement('tr');
+  teachersToDisplay.forEach(teacher => {
+    const row = document.createElement('tr');
+
+    const birthDate = (teacher.b_date instanceof Date && !isNaN(teacher.b_date.getTime()))
+      ? teacher.b_date.toLocaleDateString()
+      : 'Unknown';
+
+    const cells = [
+      { field: 'full_name', value: teacher.full_name || '' },
+      { field: 'course', value: teacher.course || '' },
+      { field: 'age', value: teacher.age != null ? String(teacher.age) : '' },
+      { field: 'gender', value: teacher.gender || '' },
+      { field: 'country', value: teacher.country || '' },
+      { field: 'b_date', value: birthDate }
+    ];
+
+    cells.forEach(c => {
       const td = document.createElement('td');
-      td.colSpan = 6;
-      td.textContent = 'No teacher data available';
-      tr.appendChild(td);
-      tbody.appendChild(tr);
-      return;
-    }
-
-    const fragment = document.createDocumentFragment();
-
-    this.usersToShow.forEach(teacher => {
-      const row = document.createElement('tr');
-
-      const birthDate = (teacher.b_date instanceof Date && !isNaN(teacher.b_date.getTime()))
-        ? teacher.b_date.toLocaleDateString()
-        : 'Unknown';
-
-      const cells = [
-        { field: 'full_name', value: teacher.full_name || '' },
-        { field: 'course', value: teacher.course || '' },
-        { field: 'age', value: teacher.age != null ? String(teacher.age) : '' },
-        { field: 'gender', value: teacher.gender || '' },
-        { field: 'country', value: teacher.country || '' },
-        { field: 'b_date', value: birthDate }
-      ];
-
-      cells.forEach(c => {
-        const td = document.createElement('td');
-        td.dataset.field = c.field;
-        td.textContent = c.value;
-        row.appendChild(td);
-      });
-
-      fragment.appendChild(row);
+      td.dataset.field = c.field;
+      td.textContent = c.value;
+      row.appendChild(td);
     });
 
-    tbody.appendChild(fragment);
+    fragment.appendChild(row);
+  });
 
-    this.setupTableSorting();
+  tbody.appendChild(fragment);
 
-    const existingButton = document.querySelector('.show-more-stats-btn');
-    if (this.filteredTeachers.length > this.statsVisibleCount) {
-      if (!existingButton) {
-        const btn = document.createElement('button');
-        btn.textContent = 'Show more';
-        btn.className = 'show-more-stats-btn';
-        btn.addEventListener('click', () => {
-          this.statsVisibleCount += 10;
-          this.displayStatistics();
-        });
-        tbody.insertAdjacentElement('afterend', btn);
-      }
-    } else if (existingButton) {
-      existingButton.remove();
-    }
-  }
+  this.setupTableSorting();
+}
 
 
-  setupTableSorting() {
-    if (this._sortingInitialized) return;
-    this._sortingInitialized = true;
+setupTableSorting() {
+  if (this._sortingInitialized) return;
+  this._sortingInitialized = true;
 
-    const table = document.querySelector('.stats-table');
-    if (!table) return;
+  const table = document.querySelector('.stats-table');
+  if (!table) return;
 
-    table.querySelectorAll('th').forEach(h => {
-      h.classList.add('sortable');
-      h.style.cursor = 'pointer';
-      h.setAttribute('role', 'button');
-    });
+  table.querySelectorAll('th').forEach(h => {
+    h.classList.add('sortable');
+    h.style.cursor = 'pointer';
+    h.setAttribute('role', 'button');
+  });
 
-    table.addEventListener('click', (e) => {
-      const th = e.target.closest('th');
-      if (!th) return;
-      this.handleTableSort(th);
-    });
-  }
+  table.addEventListener('click', (e) => {
+    const th = e.target.closest('th');
+    if (!th) return;
+    this.handleTableSort(th);
+  });
+}
 
   handleTableSort(header) {
     const sortField = header.dataset.field;
@@ -886,9 +854,7 @@ class TeacherManager {
 
     tbody.innerHTML = '';
 
-    this.usersToShow = sortedTeachers.slice(0, this.statsVisibleCount);
-
-    this.usersToShow.forEach(teacher => {
+    sortedTeachers.forEach(teacher => {
       const row = document.createElement('tr');
       const birthDate = teacher.b_date instanceof Date && !isNaN(teacher.b_date.getTime()) 
         ? teacher.b_date.toLocaleDateString() 
@@ -977,7 +943,7 @@ class TeacherManager {
           <span class="close-btn" title="Close popup">×</span>
         </div>
 
-        <form id="add-teacher-form">
+        <form id="add-teacher-form" action="#" method="post">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" placeholder="Enter name" required />
 
@@ -1035,74 +1001,52 @@ class TeacherManager {
           <label for="notes">Notes (optional)</label>
           <textarea id="notes" name="notes" rows="3" placeholder="Additional information about the teacher"></textarea>
 
-          <button type="button" class="submit-btn">Add Teacher</button>
+          <button type="submit" class="submit-btn">Add Teacher</button>
         </form>
       </section>
     `;
   }
 
-setupAddTeacherFormListeners(popupOverlay) {
-  const form = popupOverlay.querySelector('#add-teacher-form');
-  const closeBtn = popupOverlay.querySelector('.close-btn');
-  const submitBtn = form.querySelector('.submit-btn');
+  setupAddTeacherFormListeners(popupOverlay) {
+    const form = popupOverlay.querySelector('#add-teacher-form');
+    const closeBtn = popupOverlay.querySelector('.close-btn');
 
-  closeBtn.addEventListener('click', () => this.closeAddTeacherPopup(popupOverlay));
+    closeBtn.addEventListener('click', () => this.closeAddTeacherPopup(popupOverlay));
 
-  popupOverlay.addEventListener('click', (e) => {
-    if (e.target === popupOverlay) {
-      this.closeAddTeacherPopup(popupOverlay);
-    }
-  });
-
-  submitBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Adding Teacher...';
-    
-    this.handleAddTeacherFormSubmit(form, popupOverlay, submitBtn).catch(error => {
-      console.error('Form submission error:', error);
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Add Teacher';
-    });
-  });
-
-  const closeHandler = (e) => {
-    if (e.key === 'Escape') {
-      this.closeAddTeacherPopup(popupOverlay);
-      document.removeEventListener('keydown', closeHandler);
-    }
-  };
-  document.addEventListener('keydown', closeHandler);
-}
-
-handleAddTeacherFormSubmit(form, popupOverlay, submitBtn) {
-  const formData = new FormData(form);
-  const newTeacher = this.collectFormData(formData);
-
-  const normalizedTeacher = normalizeUserFields(newTeacher);
-  const validation = validateUser(normalizedTeacher);
-  
-  if (validation.valid) {
-    return this.addNewTeacher(validation)
-      .then(() => {
+    popupOverlay.addEventListener('click', (e) => {
+      if (e.target === popupOverlay) {
         this.closeAddTeacherPopup(popupOverlay);
-      })
-      .catch(error => {
-        console.error('Error adding teacher:', error);
-        // Re-enable button on error
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Add Teacher';
-      });
-  } else {
-    this.showValidationErrors(validation.errors);
-    // Re-enable button since we're not submitting
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Add Teacher';
-    return Promise.resolve(); // Return a resolved promise to maintain the chain
+      }
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.handleAddTeacherFormSubmit(form, popupOverlay);
+    });
+
+    const closeHandler = (e) => {
+      if (e.key === 'Escape') {
+        this.closeAddTeacherPopup(popupOverlay);
+        document.removeEventListener('keydown', closeHandler);
+      }
+    };
+    document.addEventListener('keydown', closeHandler);
   }
-}
+
+  handleAddTeacherFormSubmit(form, popupOverlay) {
+    const formData = new FormData(form);
+    const newTeacher = this.collectFormData(formData);
+
+    const normalizedTeacher = normalizeUserFields(newTeacher);
+    const validation = validateUser(normalizedTeacher);
+    
+    if (validation.valid) {
+      this.addNewTeacher(validation);
+      this.closeAddTeacherPopup(popupOverlay);
+    } else {
+      this.showValidationErrors(validation.errors);
+    }
+  }
 
   collectFormData(formData) {
     const dob = new Date(formData.get('dob'));
@@ -1131,76 +1075,13 @@ handleAddTeacherFormSubmit(form, popupOverlay, submitBtn) {
     };
   }
 
-async testJsonServer() {
-  try {
-    const testResponse = await fetch('http://localhost:3000/users', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    
-    if (testResponse.ok) {
-      console.log('JSON Server is accessible');
-      return true;
-    } else {
-      console.log('JSON Server returned error:', testResponse.status);
-      return false;
-    }
-  } catch (error) {
-    console.log('JSON Server is not accessible:', error.message);
-    return false;
-  }
-}
-
-addNewTeacher(validatedTeacher) {
-  return new Promise((resolve, reject) => {
+  addNewTeacher(validatedTeacher) {
     const { valid, errors, ...teacherData } = validatedTeacher;
     const enrichedTeacher = enrichUser(teacherData);
-
-    this.testJsonServer().then(isServerAvailable => {
-      if (isServerAvailable) {
-        fetch('http://localhost:3000/users', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(enrichedTeacher)
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(savedTeacher => {
-          console.log('Successfully saved to JSON Server:', savedTeacher);
-          
-          this.teachers.push(savedTeacher);
-          this.applyFilters({ resetPage: false });
-          
-          console.log('Teacher successfully added and saved to database!');
-          resolve(savedTeacher);
-        })
-        .catch(error => {
-          console.error('Error saving teacher to JSON Server:', error);
-          
-          this.teachers.push(enrichedTeacher);
-          this.applyFilters({ resetPage: false });
-          
-          console.log('Teacher added locally, but failed to save to server:', error.message);
-          resolve(enrichedTeacher);
-        });
-      } else {
-        this.teachers.push(enrichedTeacher);
-        this.applyFilters({ resetPage: false });
-        
-        console.log('Teacher added locally. JSON Server is not available.');
-        resolve(enrichedTeacher);
-      }
-    }).catch(reject);
-  });
-}
+    this.teachers.unshift(enrichedTeacher);
+    this.applyFilters({ resetPage: false });
+    console.log('New teacher added:', enrichedTeacher);
+  }
 
   closeAddTeacherPopup(popupOverlay) {
     if (popupOverlay) {
@@ -1248,7 +1129,6 @@ addNewTeacher(validatedTeacher) {
       const validated = merged;
       this.teachers = validated;
       this.filteredTeachers = validated;
-      this.favorites = new Set(this.teachers.filter(t => t.favorite).map(t => t.id));
 
       console.log('Loaded teachers:', this.teachers.length);
     } catch (error) {
@@ -1256,33 +1136,20 @@ addNewTeacher(validatedTeacher) {
     }
   }
 
-async loadMoreTeachers() {
-  try {
-    const response = await fetch('https://randomuser.me/api/?results=10');
-    const data = await response.json();
-    const apiUsers = data.results;
-    const merged = getUsers(apiUsers);
-    
-    this.teachers = this.teachers.concat(merged);
-    
-    if (this.currentSearchQuery) {
-      this.applySearchWithFilters(this.currentSearchQuery, { resetPage: false });
-    } else {
+  async loadMoreTeachers() {
+    try {
+      const response = await fetch('https://randomuser.me/api/?results=10');
+      const data = await response.json();
+      const apiUsers = data.results;
+      const merged = getAllUsers(apiUsers, this.teachers);
+      this.teachers = merged;
       this.applyFilters({ resetPage: false });
+
+      console.log('Loaded more teachers:', this.teachers.length);
+    } catch (error) {
+      console.error('Failed to load teachers:', error);
     }
-    
-    const totalTeachers = this.filteredTeachers.length;
-    const totalPages = Math.ceil(totalTeachers / this.itemsPerPage);
-    
-    this.currentPage = totalPages;
-    
-    this.displayTeachers();
-    
-    console.log('Loaded more teachers:', this.teachers.length, 'Current page:', this.currentPage);
-  } catch (error) {
-    console.error('Failed to load teachers:', error);
   }
-}
 
   setupEventListeners() {
     document.addEventListener('click', (e) => {
@@ -1307,9 +1174,7 @@ async loadMoreTeachers() {
     });
 
     const loadMoreBtn = document.querySelector('.load-more-btn');
-    if (loadMoreBtn) {
-      loadMoreBtn.addEventListener('click', () => this.loadMoreTeachers());
-    }
+    loadMoreBtn.addEventListener('click', this.loadMoreTeachers.bind(this));
 
     const ageFilter = document.getElementById('age-filter');
     const countryFilter = document.getElementById('region-filter');
