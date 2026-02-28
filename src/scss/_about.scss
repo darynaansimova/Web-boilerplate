@@ -1,0 +1,11 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+.about-text {
+    font-size: 0.8rem;
+    color: $text-color;
+    text-align: left;
+    line-height: 1rem;
+    p {
+        margin-bottom: 0.8rem;
+    }
+}
